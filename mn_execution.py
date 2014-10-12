@@ -55,6 +55,16 @@ def rebuildNodeNetworks():
 		
 # Force Cache Rebuilding Panel
 ##############################
+
+def getPossibleSockets(self, context):
+		node = bpy.context.active_node
+		socketIdentifiers = []
+		if node is not None:
+			for socket in node.inputs:
+				socketIdentifiers.append((socket.identifier, socket.identifier, ""))
+		return socketIdentifiers
+	
+bpy.types.Scene.selectedSocket = bpy.props.EnumProperty(items = getPossibleSockets, name = "Select Socket")
 		
 class AnimationNodesPanel(bpy.types.Panel):
 	bl_idname = "mn.settings_panel"
@@ -79,10 +89,11 @@ class AnimationNodesPanel(bpy.types.Panel):
 		node = bpy.context.active_node
 		if node is not None:
 			layout.label("Name: " + node.name)
+			layout.prop(bpy.context.scene, "selectedSocket", text = "Socket")
 			addToUi = layout.operator("mn.set_node_input_in_ui")
 			addToUi.nodeTreeName = node.id_data.name
 			addToUi.nodeName = node.name
-			addToUi.socketIdentifier = node.inputs[0].identifier
+			addToUi.socketIdentifier = bpy.context.scene.selectedSocket
 			
 class AnimationNodesSettingsPanel(bpy.types.Panel):
 	bl_idname = "mn.property_panel"
@@ -101,7 +112,9 @@ class AnimationNodesSettingsPanel(bpy.types.Panel):
 			if node is None: continue
 			socket = getInputSocketByIdentifier(node, item.socketIdentifier)
 			if socket is None: continue
-			socket.draw(context, layout, node, "")
+			layout.label("Node: " + node.name)
+			socket.draw(context, layout, node, socket.name)
+			layout.separator()
 			
 def getInputSocketByIdentifier(node, identifier):
 	for socket in node.inputs:
@@ -145,6 +158,7 @@ class SetNodeInputInUi(bpy.types.Operator):
 		item.nodeName = self.nodeName
 		item.socketIdentifier = self.socketIdentifier
 		return {'FINISHED'}
+
 	
 class NodeInputToUIPropertyGroup(bpy.types.PropertyGroup):
 	nodeTreeName = bpy.props.StringProperty(name = "Node Tree Name")
