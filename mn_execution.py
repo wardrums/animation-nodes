@@ -99,6 +99,10 @@ class PrintNodeTreeExecutionStrings(bpy.types.Operator):
 			print()
 		return {'FINISHED'}
 	
+class NodeInputToUIPropertyGroup(bpy.types.PropertyGroup):
+	nodeTreeName = bpy.props.StringProperty(name = "Node Tree Name")
+	nodeName = bpy.props.StringProperty(name = "Highest Frequency")
+	socketIdentifier = bpy.props.StringProperty(name = "Socket Identifier")
 	
 		
 # handlers to start the update
