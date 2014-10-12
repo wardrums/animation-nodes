@@ -61,7 +61,6 @@ class AnimationNodesPanel(bpy.types.Panel):
 	bl_label = "Animation Nodes"
 	bl_space_type = "NODE_EDITOR"
 	bl_region_type = "UI"
-	bl_context = "objectmode"
 	
 	def draw(self, context):
 		layout = self.layout
@@ -76,6 +75,39 @@ class AnimationNodesPanel(bpy.types.Panel):
 		layout.prop(scene, "showFullError", text = "Show Full Error")
 		layout.prop(scene, "nodeExecutionProfiling", text = "Node Execution Profiling")
 		
+		layout.separator()
+		node = bpy.context.active_node
+		if node is not None:
+			layout.label("Name: " + node.name)
+			addToUi = layout.operator("mn.set_node_input_in_ui")
+			addToUi.nodeTreeName = node.id_data.name
+			addToUi.nodeName = node.name
+			addToUi.socketIdentifier = node.inputs[0].identifier
+			
+class AnimationNodesPanel(bpy.types.Panel):
+	bl_idname = "mn.property_panel"
+	bl_label = "Node Settings"
+	bl_space_type = "VIEW_3D"
+	bl_region_type = "TOOLS"
+	bl_category = "Animation"
+	bl_context = "objectmode"
+	
+	def draw(self, context):
+		layout = self.layout
+		for item in bpy.context.scene.nodeInputsInUi:
+			nodeTree = bpy.data.node_groups.get(item.nodeTreeName)
+			if nodeTree is None: continue
+			node = nodeTree.nodes.get(item.nodeName)
+			if node is None: continue
+			socket = getInputSocketByIdentifier(node, item.socketIdentifier)
+			if socket is None: continue
+			socket.draw(context, layout, node, "")
+			
+def getInputSocketByIdentifier(node, identifier):
+	for socket in node.inputs:
+		if socket.identifier == identifier: return socket
+	return None
+			
 		
 		
 class ForceNodeTreeUpdate(bpy.types.Operator):
@@ -98,11 +130,28 @@ class PrintNodeTreeExecutionStrings(bpy.types.Operator):
 			print("-"*80)
 			print()
 		return {'FINISHED'}
+		
+class SetNodeInputInUi(bpy.types.Operator):
+	bl_idname = "mn.set_node_input_in_ui"
+	bl_label = "Set Node Input in UI"
+	
+	nodeTreeName = bpy.props.StringProperty()
+	nodeName = bpy.props.StringProperty()
+	socketIdentifier = bpy.props.StringProperty()
+
+	def execute(self, context):
+		item = bpy.context.scene.nodeInputsInUi.add()
+		item.nodeTreeName = self.nodeTreeName
+		item.nodeName = self.nodeName
+		item.socketIdentifier = self.socketIdentifier
+		return {'FINISHED'}
 	
 class NodeInputToUIPropertyGroup(bpy.types.PropertyGroup):
 	nodeTreeName = bpy.props.StringProperty(name = "Node Tree Name")
 	nodeName = bpy.props.StringProperty(name = "Highest Frequency")
 	socketIdentifier = bpy.props.StringProperty(name = "Socket Identifier")
+		
+#bpy.types.Scene.nodeInputsInUi = bpy.props.FloatProperty()
 	
 		
 # handlers to start the update
@@ -144,6 +193,7 @@ bpy.app.handlers.load_post.append(fileLoadHandler)
 		
 def register():
 	bpy.utils.register_module(__name__)
+	bpy.types.Scene.nodeInputsInUi = bpy.props.CollectionProperty(type = NodeInputToUIPropertyGroup)
 
 def unregister():
 	bpy.utils.unregister_module(__name__)
