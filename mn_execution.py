@@ -57,7 +57,7 @@ def rebuildNodeNetworks():
 ##############################
 		
 class AnimationNodesPanel(bpy.types.Panel):
-	bl_idname = "mn.panel"
+	bl_idname = "mn.settings_panel"
 	bl_label = "Animation Nodes"
 	bl_space_type = "NODE_EDITOR"
 	bl_region_type = "UI"
@@ -84,7 +84,7 @@ class AnimationNodesPanel(bpy.types.Panel):
 			addToUi.nodeName = node.name
 			addToUi.socketIdentifier = node.inputs[0].identifier
 			
-class AnimationNodesPanel(bpy.types.Panel):
+class AnimationNodesSettingsPanel(bpy.types.Panel):
 	bl_idname = "mn.property_panel"
 	bl_label = "Node Settings"
 	bl_space_type = "VIEW_3D"
@@ -150,8 +150,6 @@ class NodeInputToUIPropertyGroup(bpy.types.PropertyGroup):
 	nodeTreeName = bpy.props.StringProperty(name = "Node Tree Name")
 	nodeName = bpy.props.StringProperty(name = "Highest Frequency")
 	socketIdentifier = bpy.props.StringProperty(name = "Socket Identifier")
-		
-#bpy.types.Scene.nodeInputsInUi = bpy.props.FloatProperty()
 	
 		
 # handlers to start the update
