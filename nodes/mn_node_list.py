@@ -40,7 +40,8 @@ def getNodeNameDictionary():
 		("mn_CopyObjectData", "Copy Data"),
 		("mn_ObjectAttributeOutputNode", "Attribute Output"),
 		("mn_CopyTransformsNode", "Copy Transforms"),
-		("mn_ObjectOutputNode", "Transforms Output") ] ))
+		("mn_ObjectOutputNode", "Transforms Output"),
+        ("mn_PropIn," "Prop In") ] ))
 		
 	nodes.append(("List", [
 		("mn_GetListElementNode", "Get Element"),
@@ -79,8 +80,12 @@ def getNodeNameDictionary():
 		("mn_ToObjectConversion", "To Object") ] ))
 		
 	nodes.append(("Script", [
-		("mn_ExpressionNode", "Expression") ] ))
-		
+		("mn_ExpressionNode", "Expression"),
+        ("mn_PropertyIn," "Property Input") ] ))
+
+	nodes.append(("Input", [
+        ("mn_PropIn," "Property input") ] ))		
+
 	nodes.append(("System", [
 		("mn_LoopCallerNode", "Loop Caller"),
 		("mn_LoopStartNode", "Generic Loop", {"preset" : repr("NONE")}),

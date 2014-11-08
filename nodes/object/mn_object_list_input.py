@@ -31,13 +31,13 @@ class mn_ObjectListInputNode(Node, AnimationNode):
 				select.nodeName = self.name
 				select.index = index
 				row.prop_search(item, "object",  context.scene, "objects", icon="NONE", text = "")  
-				remove = row.operator("mn.remove_property_from_list_node", text = "", icon = "X")
+				remove = row.operator("mn.remove_property_from_out_list_node", text = "", icon = "X")
 				remove.nodeTreeName = self.id_data.name
 				remove.nodeName = self.name
 				remove.index = index
 				index += 1
 				
-			add = layout.operator("mn.new_property_to_list_node", text = "New Item", icon = "PLUS")
+			add = layout.operator("mn.new_property_to_out_list_node", text = "New Item", icon = "PLUS")
 			add.nodeTreeName = self.id_data.name
 			add.nodeName = self.name
 			
@@ -102,3 +102,29 @@ class SelectedObjectsToObjectListNode(bpy.types.Operator):
 		node = getNode(self.nodeTreeName, self.nodeName)
 		node.newItemsFromList(getSortedSelectedObjectNames())
 		return {'FINISHED'}	
+	
+class mn_NewPropertyOutListNode(bpy.types.Operator):
+	bl_idname = "mn.new_property_to_out_list_node"
+	bl_label = "New String Property to String List Node"
+	
+	nodeTreeName = bpy.props.StringProperty()
+	nodeName = bpy.props.StringProperty()
+	
+	def execute(self, context):
+		node = getNode(self.nodeTreeName, self.nodeName)
+		node.addItemToList()
+		return {'FINISHED'}
+		
+class mn_RemovePropertyFromOutListNode(bpy.types.Operator):
+	bl_idname = "mn.remove_property_from_out_list_node"
+	bl_label = "Remove String Property from String List Node"
+	
+	nodeTreeName = bpy.props.StringProperty()
+	nodeName = bpy.props.StringProperty()
+	index = bpy.props.IntProperty()
+	
+	def execute(self, context):
+		node = getNode(self.nodeTreeName, self.nodeName)
+		node.removeItemFromList(self.index)
+		return {'FINISHED'}
+		
