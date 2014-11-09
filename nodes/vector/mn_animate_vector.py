@@ -15,7 +15,7 @@ class mn_AnimateVectorNode(Node, AnimationNode):
 		self.inputs.new("mn_VectorSocket", "Start")
 		self.inputs.new("mn_VectorSocket", "End")
 		self.inputs.new("mn_FloatSocket", "Time")
-		self.inputs.new("mn_InterpolationSocket", "Interpolation")
+		self.inputs.new("mn_InterpolationSocket", "Interpolation").showName = False
 		self.inputs.new("mn_FloatSocket", "Duration").number = 20.0
 		self.inputs.new("mn_FloatSocket", "Delay").number = 0.0
 		self.outputs.new("mn_VectorSocket", "Current")
@@ -32,6 +32,7 @@ class mn_AnimateVectorNode(Node, AnimationNode):
 		return {"Current" : "current", "New Time" : "newTime", "Difference" : "difference"}
 		
 	def execute(self, useOutput, start, end, time, interpolation, duration, delay):
+		duration = max(duration, 1)
 		influence = interpolation[0](max(min(time / duration, 1.0), 0.0), interpolation[1])
 		current = [start[0] * (1 - influence) + end[0] * influence,
 					start[1] * (1 - influence) + end[1] * influence,

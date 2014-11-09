@@ -24,24 +24,43 @@ def getNodeNameDictionary():
 	nodes.append(("Text", [
 		("mn_StringInputNode", "Text"),
 		("mn_StringListInputNode", "Text List"),
-		("mn_RandomStringNode", "Random"),
+		("mn_RandomStringNode", "Random Text"),
+		("mn_TextBlockReader", "Text Block Reader"),
 		("mn_CharactersNode", "Characters"),
 		("mn_CombineStringsNode", "Combine Texts"),
+		("mn_SplitText", "Split Text"),
 		("mn_ReplicateStringsNode", "Replicate Text"),
-		("mn_SubstringNode", "Trim"),
-		("mn_StringAnalyzeNode", "Analyze"),
+		("mn_SubstringNode", "Trim Text"),
+		("mn_StringAnalyzeNode", "Analyze Text"),
 		("mn_TextOutputNode", "Text Output") ] ))
 	
 	nodes.append(("Object", [
 		("mn_ObjectInputNode", "Object"),
 		("mn_ObjectListInputNode", "Object List"),
 		("mn_ObjectInfoNode", "Object Info"),
+		("mn_ObjectMatrixInput", "Object Matrices"),
 		("mn_ReplicateObjectNode", "Replicate Object"),
 		("mn_CopyObjectData", "Copy Data"),
 		("mn_ObjectAttributeOutputNode", "Attribute Output"),
 		("mn_CopyTransformsNode", "Copy Transforms"),
+<<<<<<< HEAD
 		("mn_ObjectOutputNode", "Transforms Output"),
         ("mn_PropIn," "Prop In") ] ))
+=======
+		("mn_ObjectMatrixOutputNode", "Object Matrix Output"),
+		("mn_ObjectOutputNode", "Transforms Output") ] ))
+>>>>>>> pr/1
+		
+	nodes.append(("Matrix", [
+		("mn_MatrixConvert", "Transforms from Matrix"),
+		("mn_TranslationMatrix", "Translation Matrix"),
+		("mn_RotationMatrix", "Rotation Matrix"),
+		("mn_ScaleMatrix", "Scale Matrix"),
+		("mn_ComposeMatrix", "Compose Matrix"),
+		("mn_MatrixCombine", "Combine Matrices"),
+		("mn_MatrixMath", "Matrix Math"),
+		("mn_AnimateMatrixNode", "Animate Matrix"),
+		("mn_InvertMatrix", "Invert Matrix") ] ))
 		
 	nodes.append(("List", [
 		("mn_GetListElementNode", "Get Element"),
@@ -74,10 +93,7 @@ def getNodeNameDictionary():
 		("mn_ViewportColorNode" , "Viewport Color") ] ))
 
 	nodes.append(("Convert", [
-		("mn_ToStringConversion", "To Text"),
-		("mn_ToFloatConversion", "To Float"),
-		("mn_ToIntegerConversion", "To Integer"),
-		("mn_ToObjectConversion", "To Object") ] ))
+		("mn_ConvertNode", "Convert") ] ))
 		
 	nodes.append(("Script", [
 		("mn_ExpressionNode", "Expression"),
